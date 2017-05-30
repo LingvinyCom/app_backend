@@ -1,0 +1,8 @@
+{
+  "name": "lingviny-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@gitlab.com:s-pro/Lingviny/backend.git",
+  "author": "Alexander Kazantsev <akazantsev@s-pro.io>",
+  "license": "MIT"
+}
