@@ -1,8 +1,37 @@
-import { Controller, Param, Body, Post } from 'routing-controllers';
+import { JsonController, Body, Post, State } from 'routing-controllers';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
-@Controller('/auth')
-export class AuthController {
-  
+import { BaseController } from './BaseController';
+
+export class Exists {
+
+  @IsEmail()
+  public email: string;
+}
+
+export class Login {
+
+  @IsEmail()
+  public email: string;
+
+  @IsNotEmpty()
+  public password: string;
+}
+
+@JsonController('/auth')
+export class AuthController extends BaseController {
+
   @Post('/exists')
-  login() {}
+  exists( @Body() credentials: Exists) {
+    return this.request.get('/auth/exists', {
+      params: credentials
+    });
+  }
+
+  @Post('/login')
+  login( @Body() credentials: Login) {
+    return this.request.get('/auth/login', {
+      params: credentials
+    });
+  }
 }

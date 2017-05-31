@@ -2,8 +2,9 @@ import { createConnection, Connection, Entity } from 'typeorm';
 
 const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 
-export function Connector(e: Array<any>): Promise<Connection> {
+export function Connector(entities: Array<Function>): Promise<Connection> {
   return createConnection({
+    entities,
     driver: {
       type: 'mysql',
       host: DB_HOST,
@@ -11,7 +12,6 @@ export function Connector(e: Array<any>): Promise<Connection> {
       username: DB_USER,
       password: DB_PASSWORD,
       database: DB_NAME
-    },
-    entities: e
+    }
   });
 }

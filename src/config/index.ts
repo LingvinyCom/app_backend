@@ -1,0 +1,21 @@
+const {
+  BASE_API_URL,
+  API_PORT,
+  DB_HOST,
+  DB_PORT,
+  DB_USER,
+  DB_PASSWORD,
+  DB_NAME,
+  BASE_API_KEY
+} = process.env;
+
+export {
+  BASE_API_URL,
+  DB_HOST,
+  DB_PORT,
+  DB_USER,
+  DB_PASSWORD,
+  DB_NAME,
+  API_PORT,
+  BASE_API_KEY
+}

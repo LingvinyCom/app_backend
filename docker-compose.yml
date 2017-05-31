@@ -1,0 +1,13 @@
+version: '2.1'
+
+services:
+
+  api:
+    container_name: lingviny-api
+    hostname: lingviny-api
+    build: ./
+    volumes:
+      - ./src:/var/www/lingviny-api/src
+    ports:
+      - "3000:3000"
+    env_file: "./docker/environments"

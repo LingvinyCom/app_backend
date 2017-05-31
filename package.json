@@ -9,6 +9,7 @@
     "start": "nodemon -w src --exec node_modules/.bin/ts-node index.ts"
   },
   "dependencies": {
+    "axios": "^0.16.1",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-multer": "^1.0.1",
@@ -20,6 +21,8 @@
     "winston": "^2.3.1"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/core-js": "^0.9.41",
     "@types/koa": "^2.0.39",
     "@types/koa-bodyparser": "^3.0.23",
     "@types/koa-router": "^7.0.22",
