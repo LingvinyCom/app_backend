@@ -1,5 +1,4 @@
 import { JsonController, Body, Post, HttpCode } from 'routing-controllers';
-import { InjectRequest } from './../utils';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
 import { BaseController } from './BaseController';
