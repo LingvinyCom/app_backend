@@ -1,4 +1,5 @@
 import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+import { badRequest, badImplementation, unauthorized } from 'boom';
 import { BASE_API_URL, BASE_API_KEY } from './../config';
 
 const request = axios.create({
@@ -14,7 +15,18 @@ request.interceptors.request.use((request: AxiosRequestConfig): AxiosRequestConf
   return request;
 });
 
-request.interceptors.response.use((r: any): AxiosPromise =>
-  Promise.resolve(r.data));
+request.interceptors.response.use((r: any): AxiosPromise => {
+  const { data, data: { _code, _msg } } = r;
+  if (_code !== 200) console.log('Request error: %s', JSON.stringify(r.data));
+  switch (_code) {
+    case 500:
+      return Promise.reject(badRequest(_msg));
+    case 400:
+      return Promise.reject(badImplementation());
+    case 401:
+      return Promise.reject(unauthorized(_msg));
+  }
+  return Promise.resolve(r.data);
+});
 
 export { request };
