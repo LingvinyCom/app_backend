@@ -1,4 +1,5 @@
-import { JsonController, Body, Post, State } from 'routing-controllers';
+import { JsonController, Body, Post, HttpCode } from 'routing-controllers';
+import { InjectRequest } from './../utils';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
 import { BaseController } from './BaseController';
@@ -31,6 +32,14 @@ export class AuthController extends BaseController {
   @Post('/login')
   login( @Body() credentials: Login) {
     return this.request.get('/auth/login', {
+      params: credentials
+    });
+  }
+
+  @Post('/password_reset')
+  @HttpCode(204)
+  reset(@Body() credentials: Exists) {
+    return this.request.get('/auth/password_reset', {
       params: credentials
     });
   }
