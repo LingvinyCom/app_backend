@@ -1,0 +1,11 @@
+BASE_API_URL=https://lingviny.com/api/core/
+BASE_API_KEY=e6IBUA3CbIQHsDLur2DI
+
+API_PORT=3000
+DB_HOST=lingviny-db
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=root
+DB_NAME=lingviny
+
+
