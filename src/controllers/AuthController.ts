@@ -1,22 +1,7 @@
 import { JsonController, Body, Post, HttpCode, HeaderParam, Authorized } from 'routing-controllers';
-import { IsEmail, IsNotEmpty } from 'class-validator';
 
 import { BaseController } from './BaseController';
-
-export class Exists {
-
-  @IsEmail()
-  public email: string;
-}
-
-export class Login {
-
-  @IsEmail()
-  public email: string;
-
-  @IsNotEmpty()
-  public password: string;
-}
+import { Exists, Login } from './../models';
 
 @JsonController('/auth')
 export class AuthController extends BaseController {
