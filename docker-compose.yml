@@ -1,7 +1,20 @@
 version: '2.1'
 
 services:
-
+  db:
+    container_name: lingviny-db
+    hostname: lingviny-db
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lingviny
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
   api:
     container_name: lingviny-api
     hostname: lingviny-api
@@ -11,3 +24,8 @@ services:
     ports:
       - "3000:3000"
     env_file: "./docker/environments"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
