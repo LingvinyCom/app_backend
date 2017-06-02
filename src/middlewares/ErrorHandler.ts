@@ -7,7 +7,7 @@ export class CustomErrorHandler implements KoaMiddlewareInterface {
     try {
       await next();
     } catch (e) {
-      console.log('Catched an error: %s', JSON.stringify(e));
+      console.log('Catched an error: ', e);
       let payload = e;
       if (e.isBoom) {
         payload = e.output.payload;
