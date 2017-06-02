@@ -1,9 +1,11 @@
-import { Connector } from './DBConnector';
+import { DataProvider } from './DataProvider';
 import { request } from './Request';
 import { InjectRequest } from './InjectRequest';
+import { InjectConnection } from './InjectConnection';
 
 export {
-  Connector,
+  DataProvider,
   InjectRequest,
+  InjectConnection,
   request
 };

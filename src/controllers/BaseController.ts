@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
-import { InjectRequest } from './../utils';
+import { Connection } from 'typeorm';
+import { InjectRequest, InjectConnection } from './../utils';
 
 /**
  * @TODO: Use one of:
@@ -8,6 +9,8 @@ import { InjectRequest } from './../utils';
  * to manage all dependencies.
  */
 @InjectRequest
+@InjectConnection
 export class BaseController {
   public request: AxiosInstance;
+  public connection: Connection;
 }

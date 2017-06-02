@@ -1,12 +1,12 @@
 {
   "name": "lingviny-api",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "repository": "git@gitlab.com:s-pro/Lingviny/backend.git",
   "author": "Alexander Kazantsev <akazantsev@s-pro.io>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon -w src --exec node_modules/.bin/ts-node index.ts"
+    "start": "nodemon -w src --exec node_modules/.bin/ts-node ./src/index.ts"
   },
   "dependencies": {
     "axios": "^0.16.1",
