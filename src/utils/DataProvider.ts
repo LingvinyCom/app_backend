@@ -9,6 +9,7 @@ class Provider {
   connect(entities: Array<Function>): Promise<Connection> {
     return createConnection({
       entities,
+      autoSchemaSync: true,
       driver: {
         type: 'mysql',
         host: DB_HOST,
