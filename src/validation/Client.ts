@@ -1,13 +1,11 @@
-import { IsEmail, IsNotEmpty, MinLength, IsString, ValidateIf } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, IsString, ValidateIf, IsNumber } from 'class-validator';
 
 export class Client {
   
   @IsEmail()
   @IsNotEmpty()
-  @IsString()
   public email: string;
 
-  @IsNotEmpty()
   @IsString()
   @MinLength(6)
   public password: string;
@@ -21,4 +19,7 @@ export class Client {
   @IsString()
   @MinLength(2)
   public last_name: string;
+
+  @IsNumber()
+  public engine: number;
 }
