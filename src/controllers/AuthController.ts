@@ -1,22 +1,7 @@
-import { JsonController, Body, Post, HttpCode } from 'routing-controllers';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { JsonController, Body, Post, HttpCode, HeaderParam, Authorized } from 'routing-controllers';
 
 import { BaseController } from './BaseController';
-
-export class Exists {
-
-  @IsEmail()
-  public email: string;
-}
-
-export class Login {
-
-  @IsEmail()
-  public email: string;
-
-  @IsNotEmpty()
-  public password: string;
-}
+import { Exists, Login } from './../models';
 
 @JsonController('/auth')
 export class AuthController extends BaseController {
@@ -35,9 +20,16 @@ export class AuthController extends BaseController {
     });
   }
 
+  @Authorized()
+  @HttpCode(204)
+  @Post('/logout')
+  logout( @HeaderParam('authorization') _lingviny_token: string) {
+    return this.request.get('/auth/logout', { params: { _lingviny_token } });
+  }
+
   @Post('/password_reset')
   @HttpCode(204)
-  reset(@Body() credentials: Exists) {
+  reset( @Body() credentials: Exists) {
     return this.request.get('/auth/password_reset', {
       params: credentials
     });
