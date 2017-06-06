@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, MinLength, IsString, ValidateIf, IsNumber } from 'class-validator';
+import { Engine } from "./Engine";
 
 export class Client {
   
@@ -21,5 +22,7 @@ export class Client {
   public last_name: string;
 
   @IsNumber()
-  public engine: number;
+  public engine_id: number;
+
+  public new_engine: Engine;
 }

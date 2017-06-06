@@ -6,26 +6,29 @@ export class Engine {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   title: string;
 
-  @Column()
+  @Column({ nullable: true })
   host: string;
 
-  @Column()
+  @Column({ nullable: true })
   username: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
-  @Column('int')
+  @Column('int', { nullable: true })
   server_port: number;
 
-  @Column()
+  @Column({ nullable: true })
   authentication_type: string;
 
-  @Column('boolean')
+  @Column('boolean', { nullable: true })
   is_ssl: boolean;
+
+  @Column('boolean', { 'default': true })
+  is_custom: boolean;
 
   @OneToMany(type => EmailAccount, account => account.engine)
   email_accounts: EmailAccount[];
