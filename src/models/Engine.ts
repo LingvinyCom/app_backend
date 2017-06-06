@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { EmailAccount } from "./EmailAccount";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+
+import { EmailAccount } from './EmailAccount';
 
 @Entity()
 export class Engine {
@@ -20,9 +21,6 @@ export class Engine {
 
   @Column('int', { nullable: true })
   server_port: number;
-
-  @Column({ nullable: true })
-  authentication_type: string;
 
   @Column('boolean', { nullable: true })
   is_ssl: boolean;

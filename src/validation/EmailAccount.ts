@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, MinLength, IsString, IsNumber } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, IsString, IsNumber, ValidateIf, Min } from 'class-validator';
 import { Engine } from './Engine';
 
 export class EmailAccount {
@@ -14,6 +14,7 @@ export class EmailAccount {
   public password: string;
 
   @IsNumber()
+  @Min(1)
   public engine_id: number;
 
   public new_engine: Engine;

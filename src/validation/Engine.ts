@@ -13,9 +13,6 @@ export class Engine {
   @IsNumber()
   public server_port: number;
 
-  @IsString()
-  public authentication_type: string;
-
   @IsBoolean()
   public is_ssl: boolean;
 }
