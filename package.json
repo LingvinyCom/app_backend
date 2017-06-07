@@ -6,8 +6,8 @@
   "author": "Alexander Kazantsev <akazantsev@s-pro.io>",
   "license": "MIT",
   "scripts": {
-    "start": "node_modules/.bin/ts-node index.ts",
-    "dev": "nodemon -w src --exec node_modules/.bin/ts-node index.ts"
+    "start": "node_modules/.bin/ts-node ./src/index.ts",
+    "dev": "nodemon -w src --exec node_modules/.bin/ts-node ./src/index.ts"
   },
   "dependencies": {
     "axios": "^0.16.1",
