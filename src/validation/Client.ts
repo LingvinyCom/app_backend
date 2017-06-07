@@ -9,7 +9,7 @@ export class Client {
   @IsNotEmpty()
   @IsString()
   @IsEmail()
-  @IsEmailUnique({ message: 'Email is already registered!' })
+  @IsEmailUnique({ message: 'Email is already registered' })
   public email: string;
 
   @IsNotEmpty()
@@ -34,7 +34,7 @@ export class Client {
   public engine_id: number;
 
   @ValidateIf(v => isNullOrUndefined(v.engine_id))
-  @IsNotEmpty({ message: 'Wrong data!' })
-  @IsObjectNotEmpty({ message: 'Wrong data!' })
+  @IsNotEmpty({ message: 'Wrong new engine data' })
+  @IsObjectNotEmpty({ message: 'Wrong new engine data' })
   public new_engine: Engine;
 }
