@@ -27,7 +27,7 @@ export class AuthController extends BaseController {
     return this.request.get('/auth/logout', { params: { _lingviny_token } });
   }
 
-  @Post('/password_reset')
+  @Post('/reset-password')
   @HttpCode(204)
   reset( @Body() credentials: Exists) {
     return this.request.get('/auth/password_reset', {

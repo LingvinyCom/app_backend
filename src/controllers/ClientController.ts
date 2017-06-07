@@ -1,9 +1,18 @@
-import { JsonController, Body, Post, Authorized, Param } from 'routing-controllers';
+import {
+  JsonController,
+  Body,
+  Post,
+  Put,
+  Authorized,
+  HttpCode,
+  Param,
+  HeaderParam
+} from 'routing-controllers';
 import { stringify } from 'query-string';
 import * as Boom from 'boom';
 
 import { BaseController } from './BaseController';
-import { Client, EmailAccount as EmailAccValidator } from './../validation';
+import { Client, ClientUpdate, EmailAccount as EmailAccValidator } from './../validation';
 import { User } from '../models/User';
 import { EmailAccount } from '../models/EmailAccount';
 import { Engine } from '../models/Engine';
@@ -12,7 +21,7 @@ import { Engine as EngineValidator } from '../validation/Engine';
 @JsonController('/client')
 export class ClientController extends BaseController {
 
-  @Post('/create')
+  @Post('/')
   async create( @Body({ required: true }) client: Client) {
     const userRepos = this.connection.getRepository(User);
     const emailRepos = this.connection.getRepository(EmailAccount);
@@ -38,6 +47,15 @@ export class ClientController extends BaseController {
     emailRepos.persist(newMailAccount);
 
     return user;
+  }
+
+  @Put('/')
+  @HttpCode(204)
+  @Authorized()
+  update( @HeaderParam('authorization') _lingviny_token: string,
+    @Body({ required: true }) client: ClientUpdate) {
+    const params = stringify({ ...client, _lingviny_token });
+    return this.request.post(`/client/edit?${params}`);
   }
 
   @Authorized()

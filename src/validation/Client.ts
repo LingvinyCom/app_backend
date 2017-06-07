@@ -4,8 +4,10 @@ import { isNullOrUndefined } from "util";
 import { Engine } from './Engine';
 import { IsEmailUnique, IsObjectNotEmpty } from "../utils/CustomValidators";
 
-export class Client {
 
+
+export class Client {
+  
   @IsNotEmpty()
   @IsString()
   @IsEmail()
@@ -37,4 +39,5 @@ export class Client {
   @IsNotEmpty({ message: 'Wrong new engine data' })
   @IsObjectNotEmpty({ message: 'Wrong new engine data' })
   public new_engine: Engine;
+
 }
