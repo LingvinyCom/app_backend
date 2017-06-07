@@ -19,14 +19,6 @@ export class ClientController extends BaseController {
 
     const { email, password, engine_id, new_engine } = client;
 
-    if (!engine_id && !new_engine){
-      throw Boom.badData('No email service data!');
-    }
-
-    // Check if getting email is already master for some client
-    const existEmail = await emailRepos.findOne({ email, is_master: true });
-    if (existEmail) throw Boom.badData('Email is already registered!');
-
     let token;
     try {
       token = await this.request.post(`/client/create?${stringify({ email, password })}`)
