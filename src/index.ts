@@ -9,16 +9,15 @@ import { CustomErrorHandler, AuthorizationChecker } from './middlewares';
 
 (async function start() {
   try {
-    await DataProvider.connect(Object.entries(models)
-      .map(([key, value]) => value));
+
+    await DataProvider.connect(Object.values(models));
     await createKoaServer({
       routePrefix: '/api',
       cors: true,
       defaultErrorHandler: false,
       middlewares: [CustomErrorHandler],
       authorizationChecker: AuthorizationChecker,
-      controllers: Object.entries(controllers)
-        .map(([key, value]) => value)
+      controllers: Object.values(controllers)
     }).listen(API_PORT);
   } catch (e) {
     console.log(e);

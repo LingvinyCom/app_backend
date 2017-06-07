@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
-import { EmailAccount } from "./EmailAccount";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+
+import { EmailAccount } from './EmailAccount';
 
 @Entity()
 export class User {
