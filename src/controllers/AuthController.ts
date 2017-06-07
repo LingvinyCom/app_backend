@@ -1,7 +1,7 @@
 import { JsonController, Body, Post, HttpCode, HeaderParam, Authorized } from 'routing-controllers';
 
 import { BaseController } from './BaseController';
-import { Exists, Login } from './../models';
+import { Exists, Login } from './../validation';
 
 @JsonController('/auth')
 export class AuthController extends BaseController {
