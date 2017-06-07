@@ -1,18 +1,27 @@
-import {JsonController, Body, Post, Authorized, HttpCode, Param} from 'routing-controllers';
-import {stringify} from 'query-string';
+import {
+  JsonController,
+  Body,
+  Post,
+  Put,
+  Authorized,
+  HttpCode,
+  Param,
+  HeaderParam
+} from 'routing-controllers';
+import { stringify } from 'query-string';
 
-import {BaseController} from './BaseController';
-import {Client, EmailAccount as emv} from './../validation';
-import {User} from "../models/User";
-import {EmailAccount} from "../models/EmailAccount";
+import { BaseController } from './BaseController';
+import { Client, ClientUpdate, EmailAccount as emv } from './../validation';
+import { User } from "../models/User";
+import { EmailAccount } from "../models/EmailAccount";
 import * as Boom from "boom";
-import {Engine} from "../models/Engine";
+import { Engine } from "../models/Engine";
 
 @JsonController('/client')
 export class ClientController extends BaseController {
 
-  @Post('/create')
-  async create(@Body({required: true}) client: Client) {
+  @Post('/')
+  async create( @Body({ required: true }) client: Client) {
     const userRepos = this.connection.getRepository(User);
     const emailRepos = this.connection.getRepository(EmailAccount);
 
@@ -20,7 +29,7 @@ export class ClientController extends BaseController {
     let token = 'sdgsdg';
     try {
 
-      token = await this.request.post(`/client/create?${stringify({email, password})}`)
+      token = await this.request.post(`/client/create?${stringify({ email, password })}`)
         .then((res: any) => res.lingviny_token);
 
     } catch (e) {
@@ -42,7 +51,7 @@ export class ClientController extends BaseController {
   @HttpCode(204)
   @Post('/:id/add_email')
   async addEmail( @Body() credentials: emv,
-                  @Param("id") id: number) {
+    @Param("id") id: number) {
     const { email, password, engine_id } = credentials;
 
     let userRepository = this.connection.getRepository(User);
@@ -69,5 +78,12 @@ export class ClientController extends BaseController {
 
     await userRepository.persist(user);
     return emailAccsRepository.persist(newAcc);
+  }
+
+  @Put('/')
+  @Authorized()
+  update( @HeaderParam('authorization') _lingviny_token: string,
+    @Body() client: ClientUpdate) {
+
   }
 }
