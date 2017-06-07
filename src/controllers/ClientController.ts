@@ -81,9 +81,11 @@ export class ClientController extends BaseController {
   }
 
   @Put('/')
+  @HttpCode(204)
   @Authorized()
   update( @HeaderParam('authorization') _lingviny_token: string,
-    @Body() client: ClientUpdate) {
-
+    @Body({ required: true }) client: ClientUpdate) {
+    const params = stringify({ ...client, _lingviny_token });
+    return this.request.post(`/client/edit?${params}`);
   }
 }
