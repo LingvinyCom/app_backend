@@ -13,12 +13,6 @@ export class Engine {
   @Column({ nullable: true })
   host: string;
 
-  @Column({ nullable: true })
-  username: string;
-
-  @Column({ nullable: true })
-  password: string;
-
   @Column('int', { nullable: true })
   server_port: number;
 
