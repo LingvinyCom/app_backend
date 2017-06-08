@@ -7,7 +7,7 @@ export class RemoveFiedsFromEngine1496917749789 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner, connection: Connection, entityManager?: EntityManager): Promise<any> {
-        return queryRunner.query('ALTER TABLE engine  ADD ( username char(255), password char(255));');
+        return queryRunner.query('ALTER TABLE `engine` ADD ( `username` VARCHAR(255), `password` VARCHAR(255) );');
     }
 
 }
