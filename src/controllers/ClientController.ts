@@ -68,6 +68,7 @@ export class ClientController extends BaseController {
 
     const user = await userRepository.createQueryBuilder('user')
       .innerJoinAndSelect('user', 'email_account.user')
+      .where('user.id = :id', { id })
       .getOne();
     if (!user) throw Boom.notFound();
 
