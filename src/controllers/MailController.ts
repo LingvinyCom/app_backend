@@ -3,15 +3,17 @@ import { JsonController, Body, Post, Get, HttpCode, HeaderParam, Authorized } fr
 import { BaseController } from './BaseController';
 import { EmailAccount } from "../models/EmailAccount";
 import * as Boom from 'boom';
-import { MailService } from "../utils/MailService";
+import { MailService } from "../utils";
+import * as Imap from 'imap';
+import {inspect} from 'util';
 
 @JsonController('/mail')
 export class MailController extends BaseController {
 
   @Authorized()
   @Get('/')
-  async list( @HeaderParam('authorization') _lingviny_token: string ) {
-
+  async list( @HeaderParam('authorization') _lingviny_token: string) {
+     
     let currentUserEmail;
     try{
       currentUserEmail = await this.request
@@ -26,8 +28,9 @@ export class MailController extends BaseController {
       .findOne( { email: currentUserEmail } );
     if (!user) throw Boom.badRequest('Wrong user data');
 
+
     const mailService = new MailService(user.engine);
-    return mailService.list()
+    return mailService.test()
   }
 
 }
