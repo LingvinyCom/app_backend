@@ -1,17 +1,20 @@
 import { Engine } from "../../models/Engine";
-import cred from './credentials';
-
+import Credentials from './credentials';
+import { EmailServiceCredentials } from '../../types';
 export class MailService {
 
   public engine: Engine;
+  public credentials: EmailServiceCredentials;
 
   constructor(engine: Engine){
     this.engine = engine;
-    console.log(engine);
+    this.credentials = Credentials[engine.title];
+    
   }
 
   test(){
-    return cred;
+    console.log(this.credentials);
+    return this.credentials;
   }
 
   list() {
