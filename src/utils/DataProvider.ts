@@ -9,7 +9,8 @@ class Provider {
   connect(entities: Array<Function>): Promise<Connection> {
     return createConnection({
       entities,
-      autoSchemaSync: true,
+      migrations:  [ __dirname + 'migrations/*.ts' ],
+      autoSchemaSync: false,
       driver: {
         type: 'mysql',
         host: DB_HOST,
