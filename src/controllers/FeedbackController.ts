@@ -18,22 +18,21 @@ export class FeedbackController extends BaseController {
 
     const transport = createTransport({
       host: "smtp.gmail.com",
-      port: 2525,
+      port: 587,
       auth: {
         user: "ykrashanovskaya@s-pro.io",
         pass: "test1234567"
       }
     });
 
-    const transporter = createTransport(transport);
     const message = {
       from: 'feedback@server.com',
-      to: 'ykrashanovskaya@s-pro.io',
+      to: 'yuliya.krashanov@gmail.com',
       subject: 'New Feedback',
       text: feedback.text,
     };
 
-    return transporter.sendMail(message);
+    return transport.sendMail(message);
   }
 
 }

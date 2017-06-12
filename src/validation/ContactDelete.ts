@@ -5,12 +5,6 @@ export class ContactDelete {
 
   @IsNotEmpty()
   @IsNumber()
-  @IsUserExists({ message: 'Wrong user ID' })
-  public user_id: number;
-
-  @IsNotEmpty()
-  @IsNumber()
   @IsContactExists({ message: 'Wrong contact ID' })
   public contact_id: number;
-
 }

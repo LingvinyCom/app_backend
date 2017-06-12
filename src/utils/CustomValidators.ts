@@ -30,7 +30,7 @@ export class IsUserExistsConstraint implements ValidatorConstraintInterface {
 
   validate(id: number, args: ValidationArguments) {
     return DataProvider.connection.getRepository(User).findOneById(id).then(acc => {
-      return !acc;
+      return !!acc;
     });
   }
 
@@ -41,7 +41,7 @@ export class IsContactExistsConstraint implements ValidatorConstraintInterface {
 
   validate(id: number, args: ValidationArguments) {
     return DataProvider.connection.getRepository(Contact).findOneById(id).then(acc => {
-      return !acc;
+      return !!acc;
     });
   }
 
