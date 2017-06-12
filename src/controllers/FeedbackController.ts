@@ -26,8 +26,7 @@ export class FeedbackController extends BaseController {
     });
 
     const message = {
-      from: 'feedback@server.com',
-      to: 'yuliya.krashanov@gmail.com',
+      to: 'team@lingviny.com',
       subject: 'New Feedback',
       text: feedback.text,
     };
