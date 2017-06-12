@@ -1,0 +1,13 @@
+import { Connection, EntityManager, MigrationInterface, QueryRunner } from "typeorm";
+
+export class AddFieldsToClientMail1497259342772 implements MigrationInterface {
+
+    public async up(queryRunner: QueryRunner, connection: Connection, entityManager?: EntityManager): Promise<any> {
+        return queryRunner.query('ALTER TABLE `email_account` ADD ( `state_code` VARCHAR(255), `token` VARCHAR(255), `token_type` VARCHAR(255), `token_expire` VARCHAR(255));');
+    }
+
+    public async down(queryRunner: QueryRunner, connection: Connection, entityManager?: EntityManager): Promise<any> {
+        return queryRunner.dropColumns('email_account', ['state_code', 'token', 'token_type', 'token_expire']);
+    }
+
+}

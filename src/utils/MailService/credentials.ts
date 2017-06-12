@@ -8,7 +8,7 @@ const Google: EmailServiceCredentials = {
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
     "client_secret": "suvaUAmzGZYkSDQosdc8d5l9",
     "redirect_uris": [
-        "http://ling-test.com/auth2callback"
+        "http://ling-test.com/api/mail/auth2callback"
     ],
     "javascript_origins": [
         "http://ling-test.com"
