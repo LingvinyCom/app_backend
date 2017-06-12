@@ -8,3 +8,4 @@ export { Signature } from './Signature';
 export { Feedback } from './Feedback';
 export { Contact } from './Contact';
 export { ContactDelete } from './ContactDelete';
+export { ContactCreate } from './ContactCreate';

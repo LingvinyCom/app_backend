@@ -19,19 +19,19 @@ import { ContactDelete } from "../validation/ContactDelete";
 @JsonController('/contact')
 export class ContactController extends BaseController {
 
-  userRepos: Repository<User>;
-  contactRepos: Repository<Contact>;
+  userRepository: Repository<User>;
+  contactRepository: Repository<Contact>;
 
   constructor() {
     super();
-    this.userRepos = this.connection.getRepository(User);
-    this.contactRepos = this.connection.getRepository(Contact);
+    this.userRepository = this.connection.getRepository(User);
+    this.contactRepository = this.connection.getRepository(Contact);
   }
 
   @Get('/:id')
   @Authorized()
   async get(@Param('id') id: number) {
-    const user = await this.userRepos.createQueryBuilder('user')
+    const user = await this.userRepository.createQueryBuilder('user')
       .leftJoinAndSelect('user.contacts', 'contacts')
       .where('user.id = :id', { id })
       .getOne();
@@ -43,7 +43,7 @@ export class ContactController extends BaseController {
   @Post('/')
   @Authorized()
   async add(@Body() contact: ContactCreate) {
-    const user = await this.userRepos.createQueryBuilder('user')
+    const user = await this.userRepository.createQueryBuilder('user')
       .leftJoinAndSelect('user.contacts', 'contacts')
       .where('user.id = :id', { id: contact.user_id })
       .getOne();
@@ -55,12 +55,12 @@ export class ContactController extends BaseController {
       return contact;
     });
 
-    return this.contactRepos.persist(newContacts);
+    return this.contactRepository.persist(newContacts);
   }
 
   @Delete('/')
   @Authorized()
   async delete(@Body() contact: ContactDelete) {
-    return this.contactRepos.removeById(contact.contact_id);
+    return this.contactRepository.removeById(contact.contact_id);
   }
 }
