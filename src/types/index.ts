@@ -1,5 +1,2 @@
-import {EmailServiceCredentials} from './EmailServiceCredentials';
-
-export {
-    EmailServiceCredentials
-};
+export * from './EmailServiceCredentials';
+export * from './EmailProvider';

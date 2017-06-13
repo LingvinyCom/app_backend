@@ -1,4 +1,5 @@
 import { EmailServiceCredentials } from '../../types';
+// TODO: move settings out of here
 const Google: EmailServiceCredentials = {
 
     "client_id": "148064288830-7ntpus14vkpcho3b11u6kgq33u5jdonb.apps.googleusercontent.com",
