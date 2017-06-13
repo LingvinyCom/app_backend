@@ -14,25 +14,29 @@ export class GoogleThreads extends EmailThreads {
         this.gmail = gmail;
     }
     list() {
-        this.gmail.users.threads.list({
-            auth: this.oauth2Client,
-            userId: 'me',
-        }, (err, response) => {
-            if (err) {
-                console.log('The API returned an error: ' + err);
-                return;
-            }
-            response.threads.forEach(thread => {
-                this.gmail.users.threads.get({
-                    auth: this.oauth2Client,
-                    userId: 'me',
-                    id: thread.id
-                }, (err, res) => {
-                    if (err) return console.log(err);
-                });
-
-            })
-
-        });
+        return new Promise((resolve, reject) => {
+            this.gmail.users.threads.list({
+                auth: this.oauth2Client,
+                userId: 'me',
+            }, (err, response) => {
+                if (err) {
+                    console.log('The API returned an error: ' + err);
+                    return reject(err);
+                }
+                response.threads.forEach(thread => {
+                    this.gmail.users.threads.get({
+                        auth: this.oauth2Client,
+                        userId: 'me',
+                        id: thread.id
+                    }, (err, res) => {
+                        if (err) {
+                            console.log(err);
+                            return reject(err);
+                        }
+                        resolve(res);
+                    });
+                })
+            });
+        })
     }
 }

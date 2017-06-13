@@ -35,7 +35,7 @@ export class MailController extends BaseController {
 
     const emailAccount = await this.getEmailAccount(_lingviny_token);
 
-    if (!emailAccount.token) throw Boom.badRequest('Token needed');
+    if (!emailAccount.access_token) throw Boom.badRequest('Token needed');
 
     await this.emailAccountRepository.persist(emailAccount);
 
@@ -48,18 +48,18 @@ export class MailController extends BaseController {
     const emailAccount = await this.getEmailAccount(_lingviny_token);
 
     const
-      mailService = new MailService(emailAccount),
+      mailService = await this.getMailService(emailAccount),
       list = await mailService.listLabels();
     return list;
   }
-  
+
   @Authorized()
   @Get('/messages/list')
   async messagesList( @HeaderParam('authorization') _lingviny_token: string) {
     const emailAccount = await this.getEmailAccount(_lingviny_token);
 
     const
-      mailService = new MailService(emailAccount),
+      mailService = await this.getMailService(emailAccount),
       list = await mailService.listMessages();
     return list;
   }
@@ -74,7 +74,7 @@ export class MailController extends BaseController {
     await this.emailAccountRepository.persist(emailAccount);
 
     const
-      mailService = new MailService(emailAccount),
+      mailService = await this.getMailService(emailAccount),
       url = await mailService.getAuthUrl();
 
     return url;
@@ -99,9 +99,9 @@ export class MailController extends BaseController {
     if (!emailAccount) throw Boom.badRequest('Wrong user data');
 
     const mailService = new MailService(emailAccount);
-    const { access_token: token, expiry_date: token_expire, token_type } = await mailService.getToken(code);
+    const { access_token, expiry_date, token_type, refresh_token } = await mailService.getToken(code);
 
-    emailAccount = { ...emailAccount, token, token_expire, token_type };
+    emailAccount = { ...emailAccount, access_token, expiry_date, token_type, refresh_token };
 
     await this.emailAccountRepository.persist(emailAccount);
 
@@ -132,5 +132,14 @@ export class MailController extends BaseController {
       });
     if (!emailAccount) throw Boom.badRequest('Wrong user data');
     return emailAccount;
+  }
+
+  async getMailService(emailAccount){
+    const mailService = new MailService(emailAccount);
+    if(+emailAccount.expiry_date < (new Date()).getTime()){
+      const { access_token, expiry_date, token_type, refresh_token } = await mailService.refreshToken();
+      await this.emailAccountRepository.persist(emailAccount);
+    }
+    return mailService;
   }
 }

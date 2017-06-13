@@ -21,7 +21,7 @@ export class GoogleLabels extends EmailLabels {
             }, (err, response) => {
                 if (err) {
                     console.error('The API returned an error: ' + err);
-                    return;
+                    return reject(err);
                 }
                 resolve(response.labels);
             });

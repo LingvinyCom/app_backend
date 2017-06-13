@@ -21,7 +21,7 @@ export class GoogleMessages extends EmailMessages {
             }, (err, response) => {
                 if (err) {
                     console.log('The API returned an error: ' + err);
-                    return;
+                    return reject(err);
                 }
                 resolve(Promise.all(response.messages.map(message => this.get(message.id))));
             });

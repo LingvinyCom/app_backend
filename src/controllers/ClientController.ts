@@ -72,11 +72,8 @@ export class ClientController extends BaseController {
   }
 
   async getEngine(engine_id: number, new_engine: EngineValidator) {
-<<<<<<< HEAD
     const engineRepos = this.connection.getRepository(Engine);
     
-=======
->>>>>>> develop
     if (new_engine) {
       const newEngine = Object.assign(new Engine(), new_engine);
       return this.engineRepository.persist(newEngine)

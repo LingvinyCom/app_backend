@@ -33,6 +33,11 @@ export class MailService {
   async getToken(code: string): Promise<any> {
     return await this.provider.getToken(code);
   }
+
+  async refreshToken(): Promise<any> {
+    return await this.provider.refreshToken();
+  }
+
   async getAuthUrl() {
     return await this.provider.getAuthUrl();
 

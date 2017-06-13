@@ -27,11 +27,14 @@ export class EmailAccount {
   state_code: string;
 
   @Column()
-  token: string;
+  access_token: string;
 
   @Column()
-  token_expire: string;
+  expiry_date: string;
 
   @Column()
   token_type: string;
+
+  @Column()
+  refresh_token: string;
 }

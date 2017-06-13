@@ -3,7 +3,6 @@ import { GoogleLabels, GoogleThreads, GoogleMessages } from './';
 import * as googleAuth from 'google-auth-library';
 import * as google from 'googleapis';
 import { EmailAccount } from "../../../../models/EmailAccount";
-import * as ClientOAuth2 from 'client-oauth2';
 
 export class GoogleProvider implements EmailProvider {
   public labels: GoogleLabels;
@@ -14,7 +13,6 @@ export class GoogleProvider implements EmailProvider {
   public oauth2Client: googleAuth.OAuth2;
   public emailAccount: EmailAccount;
   public gmail;
-  private mailAuth: ClientOAuth2;
 
   constructor(
     credentials: EmailServiceCredentials,
@@ -30,11 +28,12 @@ export class GoogleProvider implements EmailProvider {
       this.credentials.redirect_uris[0]
     );
 
-    if (this.emailAccount.token) {
+    if (this.emailAccount.access_token) {
       this.oauth2Client.credentials = {
-        access_token: this.emailAccount.token,
+        access_token: this.emailAccount.access_token,
+        refresh_token: this.emailAccount.refresh_token,
         token_type: this.emailAccount.token_type,
-        expiry_date: (new Date()).getTime() + (1000 * 60 * 60 * 24 * 365)
+        expiry_date: this.emailAccount.expiry_date
       }
     }
     this.labels = new GoogleLabels(this.oauth2Client, this.gmail);
@@ -44,35 +43,35 @@ export class GoogleProvider implements EmailProvider {
   }
 
   // TODO: define type for token
-  async getToken(code: string): Promise<any> {
-    const token = await new Promise((resolve, reject) => {
-      this.oauth2Client.getToken(code, (err, token) => {
-        console.error(err);
+  getToken(code: string): any {
+    return new Promise((resolve, reject) => {
+      this.oauth2Client.getToken(code, (err, tokens) => {
         if (err) return reject(err);
-        resolve(token);
+        console.log(tokens);
+        resolve(tokens);
       });
     });
+  }
 
-    return token;
+  refreshToken(): any {
+    return new Promise((resolve, reject) => {
+      this.oauth2Client.refreshAccessToken(function (err, tokens) {
+        if (err) return reject(err);
+        console.log(tokens);
+        resolve(tokens);
+      });
+      
+    });
   }
 
   public async getAuthUrl() {
-    this.mailAuth = new ClientOAuth2({
-      clientId: this.credentials.client_id,
-      clientSecret: this.credentials.client_secret,
-      accessTokenUri: this.credentials.token_uri,
-      authorizationUri: this.credentials.auth_uri,
-      redirectUri: this.credentials.redirect_uris[0],
-      scopes: [
-        'https://mail.google.com/',
-        // 'https://www.googleapis.com/auth/gmail.modify',
-        // 'https://www.googleapis.com/auth/gmail.readonly',
-        // 'https://www.googleapis.com/auth/gmail.labels',
-        // 'https://www.googleapis.com/auth/gmail.metadata'
-      ],
-      state: this.emailAccount.state_code,
 
+    return this.oauth2Client.generateAuthUrl({
+      access_type: 'offline',
+      scope: ['https://mail.google.com/'],
+      state: this.emailAccount.state_code
     });
-    return this.mailAuth.code.getUri();
+
+
   }
 }
