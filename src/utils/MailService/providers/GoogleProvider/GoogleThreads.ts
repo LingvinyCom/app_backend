@@ -29,7 +29,6 @@ export class GoogleThreads extends EmailThreads {
                     id: thread.id
                 }, (err, res) => {
                     if (err) return console.log(err);
-                    console.log(res);
                 });
 
             })

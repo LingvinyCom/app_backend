@@ -27,7 +27,6 @@ export class MailService {
   }
 
   listMessages() {
-    console.log(this);
     return this.provider.messages.list();
   }
 
