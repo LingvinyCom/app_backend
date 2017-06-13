@@ -4,3 +4,8 @@ export { Login } from './Login';
 export { EmailAccount } from './EmailAccount';
 export { Engine } from './Engine';
 export { ClientUpdate } from './ClientUpdate';
+export { Signature } from './Signature';
+export { Feedback } from './Feedback';
+export { Contact } from './Contact';
+export { ContactDelete } from './ContactDelete';
+export { ContactCreate } from './ContactCreate';
