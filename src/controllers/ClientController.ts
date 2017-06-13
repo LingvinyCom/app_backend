@@ -12,20 +12,14 @@ import { stringify } from 'query-string';
 import * as Boom from 'boom';
 
 import { BaseController } from './BaseController';
-import { Client, ClientUpdate, EmailAccount as EmailAccValidator } from './../validation';
-import { User } from '../models/User';
-import { EmailAccount } from '../models/EmailAccount';
-import { Engine } from '../models/Engine';
-import { Engine as EngineValidator } from '../validation/Engine';
+import { Client, ClientUpdate, EmailAccount as EmailAccValidator, Engine as EngineValidator } from './../validation';
+import { User, EmailAccount, Engine } from '../models';
 
 @JsonController('/client')
 export class ClientController extends BaseController {
 
   @Post('/')
   async create( @Body({ required: true }) client: Client) {
-    const userRepos = this.connection.getRepository(User);
-    const emailRepos = this.connection.getRepository(EmailAccount);
-
     const { email, password, engine_id, new_engine } = client;
 
     let token;
@@ -41,10 +35,10 @@ export class ClientController extends BaseController {
 
     let user = new User();
     user.token = token;
-    user = await userRepos.persist(user);
+    user = await this.userRepository.persist(user);
 
     const newMailAccount = Object.assign(new EmailAccount(), { email, password, is_master: true, user, engine });
-    emailRepos.persist(newMailAccount);
+    await this.emailAccountRepository.persist(newMailAccount);
 
     return user;
   }
@@ -63,10 +57,8 @@ export class ClientController extends BaseController {
   async addEmail( @Body() credentials: EmailAccValidator,
                   @Param('id') id: number) {
     const { email, password, engine_id, new_engine } = credentials;
-    const userRepository = this.connection.getRepository(User);
-    const emailAccsRepository = this.connection.getRepository(EmailAccount);
 
-    const user = await userRepository.createQueryBuilder('user')
+    const user = await this.userRepository.createQueryBuilder('user')
       .innerJoinAndSelect('user', 'email_account.user')
       .where('user.id = :id', { id })
       .getOne();
@@ -76,16 +68,19 @@ export class ClientController extends BaseController {
     if (!engine) throw Boom.notFound();
 
     const newAcc = Object.assign(new EmailAccount(), { email, password, is_master: false, engine, user });
-    return emailAccsRepository.persist(newAcc);
+    return this.emailAccountRepository.persist(newAcc);
   }
 
   async getEngine(engine_id: number, new_engine: EngineValidator) {
+<<<<<<< HEAD
     const engineRepos = this.connection.getRepository(Engine);
     
+=======
+>>>>>>> develop
     if (new_engine) {
       const newEngine = Object.assign(new Engine(), new_engine);
-      return engineRepos.persist(newEngine)
+      return this.engineRepository.persist(newEngine)
     }
-    return engineRepos.findOneById(engine_id);
+    return this.engineRepository.findOneById(engine_id);
   }
 }

@@ -35,7 +35,7 @@ export class Client {
   @Min(1)
   public engine_id: number;
 
-  @ValidateIf(v => isNullOrUndefined(v.engine_id))
+  @ValidateIf(v => isNullOrUndefined(v.engine_id) && !!v.new_engine)
   @IsNotEmpty({ message: 'Wrong new engine data' })
   @IsObjectNotEmpty({ message: 'Wrong new engine data' })
   public new_engine: Engine;

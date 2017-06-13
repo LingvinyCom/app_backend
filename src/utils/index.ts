@@ -3,11 +3,13 @@ import { request } from './Request';
 import { InjectRequest } from './InjectRequest';
 import { InjectConnection } from './InjectConnection';
 import { MailService } from './MailService';
+import { InjectRepositories } from './InjectRepositories';
 
 export {
   DataProvider,
   InjectRequest,
   InjectConnection,
-  request,
-  MailService
+  MailService,
+  InjectRepositories,
+  request
 };
