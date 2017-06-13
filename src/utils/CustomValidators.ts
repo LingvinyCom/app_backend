@@ -18,9 +18,7 @@ export class IsObjectNotEmptyConstraint implements ValidatorConstraintInterface 
 export class IsEmailUniqueConstraint implements ValidatorConstraintInterface {
 
   validate(email: string, args: ValidationArguments) {
-    return DataProvider.connection.getRepository(EmailAccount).findOne({ email }).then(acc => {
-      return !acc;
-    });
+    return DataProvider.connection.getRepository(EmailAccount).findOne({ email }).then(acc => !acc);
   }
 
 }
@@ -29,9 +27,7 @@ export class IsEmailUniqueConstraint implements ValidatorConstraintInterface {
 export class IsUserExistsConstraint implements ValidatorConstraintInterface {
 
   validate(id: number, args: ValidationArguments) {
-    return DataProvider.connection.getRepository(User).findOneById(id).then(acc => {
-      return !!acc;
-    });
+    return DataProvider.connection.getRepository(User).findOneById(id).then(acc => !!acc);
   }
 
 }
@@ -40,9 +36,7 @@ export class IsUserExistsConstraint implements ValidatorConstraintInterface {
 export class IsContactExistsConstraint implements ValidatorConstraintInterface {
 
   validate(id: number, args: ValidationArguments) {
-    return DataProvider.connection.getRepository(Contact).findOneById(id).then(acc => {
-      return !!acc;
-    });
+    return DataProvider.connection.getRepository(Contact).findOneById(id).then(acc => !!acc);
   }
 
 }

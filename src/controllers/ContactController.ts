@@ -7,26 +7,14 @@ import {
   Param,
   Delete
 } from 'routing-controllers';
-
-import { Repository } from "typeorm";
 import * as Boom from "boom";
 
 import { BaseController } from './BaseController';
-import { User, Contact } from "../models";
-import { ContactCreate } from "../validation/ContactCreate";
-import { ContactDelete } from "../validation/ContactDelete";
+import { Contact } from "../models";
+import { ContactCreate, ContactDelete } from "../validation";
 
 @JsonController('/contact')
 export class ContactController extends BaseController {
-
-  userRepository: Repository<User>;
-  contactRepository: Repository<Contact>;
-
-  constructor() {
-    super();
-    this.userRepository = this.connection.getRepository(User);
-    this.contactRepository = this.connection.getRepository(Contact);
-  }
 
   @Get('/:id')
   @Authorized()

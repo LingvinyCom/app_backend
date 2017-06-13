@@ -6,23 +6,14 @@ import {
   Param,
   Authorized
 } from 'routing-controllers';
+import * as Boom from 'boom';
 
 import { BaseController } from './BaseController';
-import { Signature as SignatureValidator } from "../validation";
-import { Signature } from "../models";
-import { Repository } from "typeorm";
-import { User } from "../models/User";
-import * as Boom from "boom";
+import { Signature as SignatureValidator } from '../validation';
+import { Signature } from '../models';
 
 @JsonController('/signature')
 export class SignatureController extends BaseController {
-
-  userRepository: Repository<User>;
-
-  constructor() {
-    super();
-    this.userRepository = this.connection.getRepository(User);
-  }
 
   @Get('/:id')
   @Authorized()
@@ -39,8 +30,6 @@ export class SignatureController extends BaseController {
   @Post('/')
   @Authorized()
   async save( @Body() signature: SignatureValidator) {
-    const signatureRepository = this.connection.getRepository(Signature);
-
     const user = await this.userRepository.createQueryBuilder('user')
       .leftJoinAndSelect('user.signature', 'signature')
       .where('user.id = :id', { id: signature.user_id })
@@ -49,13 +38,13 @@ export class SignatureController extends BaseController {
 
     if (user.signature){
       user.signature.text = signature.text;
-      return signatureRepository.persist(user.signature);
+      return this.signatureRepository.persist(user.signature);
     }
     else{
       const newSign = new Signature();
       newSign.text =  signature.text;
       newSign.user = user;
-      return signatureRepository.persist(newSign);
+      return this.signatureRepository.persist(newSign);
     }
   }
 }

@@ -16,6 +16,7 @@ export class FeedbackController extends BaseController {
   @Authorized()
   async send( @Body() feedback: Feedback) {
 
+    // TODO: make it with config variables and maybe special service
     const transport = createTransport({
       host: "smtp.gmail.com",
       port: 587,

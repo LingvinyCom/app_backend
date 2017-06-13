@@ -12,24 +12,11 @@ import { stringify } from 'query-string';
 import * as Boom from 'boom';
 
 import { BaseController } from './BaseController';
-import { Client, ClientUpdate, EmailAccount as EmailAccValidator } from './../validation';
-import { User } from '../models/User';
-import { EmailAccount } from '../models/EmailAccount';
-import { Engine } from '../models/Engine';
-import { Engine as EngineValidator } from '../validation/Engine';
-import { Repository } from "typeorm";
+import { Client, ClientUpdate, EmailAccount as EmailAccValidator, Engine as EngineValidator } from './../validation';
+import { User, EmailAccount, Engine } from '../models';
 
 @JsonController('/client')
 export class ClientController extends BaseController {
-
-  userRepository: Repository<User>;
-  emailAccountRepository: Repository<EmailAccount>;
-
-  constructor() {
-    super();
-    this.userRepository = this.connection.getRepository(User);
-    this.emailAccountRepository = this.connection.getRepository(EmailAccount);
-  }
 
   @Post('/')
   async create( @Body({ required: true }) client: Client) {
@@ -85,12 +72,10 @@ export class ClientController extends BaseController {
   }
 
   async getEngine(engine_id: number, new_engine: EngineValidator) {
-    const engineRepository = this.connection.getRepository(Engine);
-
     if (new_engine) {
       const newEngine = Object.assign(new Engine(), new_engine);
-      return engineRepository.persist(newEngine)
+      return this.engineRepository.persist(newEngine)
     }
-    return engineRepository.findOneById(engine_id);
+    return this.engineRepository.findOneById(engine_id);
   }
 }
