@@ -1,8 +1,9 @@
-import { EmailLabels, EmailProvider, EmailServiceCredentials } from '../../../../types';
-import { GoogleLabels, GoogleThreads, GoogleMessages } from './';
 import * as googleAuth from 'google-auth-library';
 import * as google from 'googleapis';
-import { EmailAccount } from "../../../../models/EmailAccount";
+
+import { GoogleLabels, GoogleThreads, GoogleMessages } from './';
+import { EmailLabels, EmailProvider, EmailServiceCredentials } from '../../../../types';
+import { EmailAccount } from '../../../../models';
 
 export class GoogleProvider implements EmailProvider {
   public labels: GoogleLabels;

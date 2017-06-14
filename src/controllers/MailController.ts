@@ -10,14 +10,14 @@ import {
   Req
 } from 'routing-controllers';
 import { Repository } from "typeorm";
+import { inspect } from 'util';
+import * as Imap from 'imap';
+import * as crypto from 'crypto';
+import * as Boom from 'boom';
 
 import { BaseController } from './BaseController';
-import { EmailAccount } from "../models/EmailAccount";
-import * as Boom from 'boom';
-import { MailService } from "../utils";
-import * as Imap from 'imap';
-import { inspect } from 'util';
-import * as crypto from 'crypto';
+import { EmailAccount } from '../models';
+import { MailService } from '../utils';
 
 @JsonController('/mail')
 export class MailController extends BaseController {
@@ -26,7 +26,6 @@ export class MailController extends BaseController {
 
   constructor() {
     super();
-    this.emailAccountRepository = this.connection.getRepository(EmailAccount);
   };
 
   @Authorized()
@@ -134,9 +133,9 @@ export class MailController extends BaseController {
     return emailAccount;
   }
 
-  async getMailService(emailAccount){
+  async getMailService(emailAccount) {
     const mailService = new MailService(emailAccount);
-    if(+emailAccount.expiry_date < (new Date()).getTime()){
+    if (+emailAccount.expiry_date < (new Date()).getTime()) {
       const { access_token, expiry_date, token_type, refresh_token } = await mailService.refreshToken();
       await this.emailAccountRepository.persist(emailAccount);
     }

@@ -1,9 +1,8 @@
-import { Engine } from "../../models/Engine";
+import Imap from 'imap';
+
+import { Engine, EmailAccount } from '../../models';
 import Credentials from './credentials';
 import { EmailServiceCredentials, EmailProvider } from '../../types';
-
-import { EmailAccount } from "../../models/EmailAccount";
-import Imap from 'imap';
 import * as EmailProviders from './providers';
 
 export class MailService {

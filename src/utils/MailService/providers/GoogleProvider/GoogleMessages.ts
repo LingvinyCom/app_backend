@@ -1,6 +1,7 @@
-import { EmailMessages, EmailServiceCredentials } from '../../../../types';
 import * as googleAuth from 'google-auth-library';
 import * as google from 'googleapis';
+
+import { EmailMessages, EmailServiceCredentials } from '../../../../types';
 
 export class GoogleMessages extends EmailMessages {
     private oauth2Client: googleAuth.OAuth2;

@@ -1,6 +1,7 @@
-import { EmailThreads, EmailServiceCredentials } from '../../../../types';
 import * as googleAuth from 'google-auth-library';
 import * as google from 'googleapis';
+
+import { EmailThreads, EmailServiceCredentials } from '../../../../types';
 
 export class GoogleThreads extends EmailThreads {
     private oauth2Client: googleAuth.OAuth2;

@@ -1,6 +1,7 @@
-import { EmailLabels, EmailServiceCredentials } from '../../../../types';
 import * as googleAuth from 'google-auth-library';
 import * as google from 'googleapis';
+
+import { EmailLabels, EmailServiceCredentials } from '../../../../types';
 
 export class GoogleLabels extends EmailLabels {
     private oauth2Client: googleAuth.OAuth2;
