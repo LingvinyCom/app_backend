@@ -24,7 +24,7 @@ export class SignatureController extends BaseController {
       .getOne();
     if (!user) throw Boom.badData();
 
-    return user.signature || {};
+    return user.signature || { text: 'Sent with Lingviny' };
   }
 
   @Post('/')
