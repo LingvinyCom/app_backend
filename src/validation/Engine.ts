@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber, IsBoolean } from 'class-validator';
+import { IsString, IsNumber, IsBoolean } from 'class-validator';
 
 export class Engine {
   @IsString()

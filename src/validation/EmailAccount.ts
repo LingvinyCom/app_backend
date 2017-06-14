@@ -1,8 +1,8 @@
 import { IsEmail, IsNotEmpty, MinLength, IsString, IsNumber, ValidateIf, Min } from 'class-validator';
+import { isNullOrUndefined } from 'util';
 
 import { Engine } from './Engine';
 import { IsEmailUnique, IsObjectNotEmpty } from "../utils/CustomValidators";
-import { isNullOrUndefined } from "util";
 
 export class EmailAccount {
 

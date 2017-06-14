@@ -4,42 +4,34 @@ import {
   Get,
   Authorized,
   Post,
-  Param,
-  Delete
+  Delete,
+  UseBefore,
+  State
 } from 'routing-controllers';
-import * as Boom from "boom";
 
 import { BaseController } from './BaseController';
-import { Contact } from "../models";
+import { Contact, EmailAccount } from "../models";
 import { ContactCreate, ContactDelete } from "../validation";
+import { InitEmailAccount } from "../middlewares";
 
 @JsonController('/contact')
 export class ContactController extends BaseController {
 
-  @Get('/:id')
+  @Get('/')
   @Authorized()
-  async get(@Param('id') id: number) {
-    const user = await this.userRepository.createQueryBuilder('user')
-      .leftJoinAndSelect('user.contacts', 'contacts')
-      .where('user.id = :id', { id })
-      .getOne();
-    if (!user) throw Boom.badData();
-
-    return user.contacts || [];
+  @UseBefore(InitEmailAccount)
+  async get( @State('emailAccount') emailAccount: EmailAccount) {
+    return this.contactRepository.find({ user: emailAccount.user.id });
   }
 
   @Post('/')
   @Authorized()
-  async add(@Body() contact: ContactCreate) {
-    const user = await this.userRepository.createQueryBuilder('user')
-      .leftJoinAndSelect('user.contacts', 'contacts')
-      .where('user.id = :id', { id: contact.user_id })
-      .getOne();
-    if (!user) throw Boom.badData();
-
+  @UseBefore(InitEmailAccount)
+  async add( @Body() contact: ContactCreate,
+             @State('emailAccount') emailAccount: EmailAccount) {
     const newContacts = contact.contacts.map(cont => {
       let contact = Object.assign(new Contact(), cont);
-      contact.user = user;
+      contact.user = emailAccount.user;
       return contact;
     });
 

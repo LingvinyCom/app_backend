@@ -3,8 +3,7 @@ import {
   IsNotEmpty,
   MinLength,
   IsString,
-  ValidateIf,
-  IsNumber
+  ValidateIf
 } from 'class-validator';
 
 export class ClientUpdate {

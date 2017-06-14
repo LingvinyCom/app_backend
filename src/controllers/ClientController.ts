@@ -6,7 +6,9 @@ import {
   Authorized,
   HttpCode,
   Param,
-  HeaderParam
+  HeaderParam,
+  State,
+  UseBefore
 } from 'routing-controllers';
 import { stringify } from 'query-string';
 import * as Boom from 'boom';
@@ -14,6 +16,7 @@ import * as Boom from 'boom';
 import { BaseController } from './BaseController';
 import { Client, ClientUpdate, EmailAccount as EmailAccValidator, Engine as EngineValidator } from './../validation';
 import { User, EmailAccount, Engine } from '../models';
+import { InitEmailAccount } from "../middlewares";
 
 @JsonController('/client')
 export class ClientController extends BaseController {
@@ -53,21 +56,16 @@ export class ClientController extends BaseController {
   }
 
   @Authorized()
-  @Post('/:id/add-email')
+  @UseBefore(InitEmailAccount)
+  @Post('/add-email')
   async addEmail( @Body() credentials: EmailAccValidator,
-                  @Param('id') id: number) {
+                  @State('emailAccount') emailAccount: EmailAccount) {
     const { email, password, engine_id, new_engine } = credentials;
-
-    const user = await this.userRepository.createQueryBuilder('user')
-      .innerJoinAndSelect('user', 'email_account.user')
-      .where('user.id = :id', { id })
-      .getOne();
-    if (!user) throw Boom.notFound();
 
     const engine = await this.getEngine(engine_id, new_engine);
     if (!engine) throw Boom.notFound();
 
-    const newAcc = Object.assign(new EmailAccount(), { email, password, is_master: false, engine, user });
+    const newAcc = Object.assign(new EmailAccount(), { email, password, is_master: false, engine, user: emailAccount.user });
     return this.emailAccountRepository.persist(newAcc);
   }
 

@@ -1,9 +1,12 @@
-import { registerDecorator, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments } from "class-validator";
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  ValidationArguments } from 'class-validator';
 
-import { DataProvider } from "./DataProvider";
-import { EmailAccount } from "../models/EmailAccount";
-import { User } from "../models/User";
-import { Contact } from "../models/Contact";
+import { DataProvider } from './DataProvider';
+import { EmailAccount, Contact } from '../models';
 
 @ValidatorConstraint()
 export class IsObjectNotEmptyConstraint implements ValidatorConstraintInterface {
@@ -19,15 +22,6 @@ export class IsEmailUniqueConstraint implements ValidatorConstraintInterface {
 
   validate(email: string, args: ValidationArguments) {
     return DataProvider.connection.getRepository(EmailAccount).findOne({ email }).then(acc => !acc);
-  }
-
-}
-
-@ValidatorConstraint()
-export class IsUserExistsConstraint implements ValidatorConstraintInterface {
-
-  validate(id: number, args: ValidationArguments) {
-    return DataProvider.connection.getRepository(User).findOneById(id).then(acc => !!acc);
   }
 
 }
@@ -61,18 +55,6 @@ export function IsEmailUnique(validationOptions?: ValidationOptions) {
       options: validationOptions,
       constraints: [],
       validator: IsEmailUniqueConstraint
-    });
-  };
-}
-
-export function IsUserExists(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
-    registerDecorator({
-      target: object.constructor,
-      propertyName: propertyName,
-      options: validationOptions,
-      constraints: [],
-      validator: IsUserExistsConstraint
     });
   };
 }
