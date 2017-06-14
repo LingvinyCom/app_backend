@@ -11,7 +11,6 @@ import {
 } from 'routing-controllers';
 import { Repository } from "typeorm";
 import { inspect } from 'util';
-import * as Imap from 'imap';
 import * as crypto from 'crypto';
 import * as Boom from 'boom';
 
@@ -22,20 +21,11 @@ import { MailService } from '../utils';
 @JsonController('/mail')
 export class MailController extends BaseController {
 
-  public emailAccountRepository: Repository<EmailAccount>;
-
-  constructor() {
-    super();
-  };
-
   @Authorized()
   @Get('/')
   async list( @HeaderParam('authorization') _lingviny_token: string) {
-
     const emailAccount = await this.getEmailAccount(_lingviny_token);
-
     if (!emailAccount.access_token) throw Boom.badRequest('Token needed');
-
     await this.emailAccountRepository.persist(emailAccount);
 
     return {};
@@ -44,22 +34,22 @@ export class MailController extends BaseController {
   @Authorized()
   @Get('/labels/list')
   async labelsList( @HeaderParam('authorization') _lingviny_token: string) {
-    const emailAccount = await this.getEmailAccount(_lingviny_token);
-
     const
+      emailAccount = await this.getEmailAccount(_lingviny_token),
       mailService = await this.getMailService(emailAccount),
       list = await mailService.listLabels();
+
     return list;
   }
 
   @Authorized()
   @Get('/messages/list')
   async messagesList( @HeaderParam('authorization') _lingviny_token: string) {
-    const emailAccount = await this.getEmailAccount(_lingviny_token);
-
     const
+      emailAccount = await this.getEmailAccount(_lingviny_token),
       mailService = await this.getMailService(emailAccount),
       list = await mailService.listMessages();
+
     return list;
   }
 
@@ -67,11 +57,8 @@ export class MailController extends BaseController {
   @Get('/authUrl')
   async authUrl( @HeaderParam('authorization') _lingviny_token: string) {
     const emailAccount = await this.getEmailAccount(_lingviny_token);
-
     emailAccount.state_code = crypto.randomBytes(32).toString('hex');
-
     await this.emailAccountRepository.persist(emailAccount);
-
     const
       mailService = await this.getMailService(emailAccount),
       url = await mailService.getAuthUrl();
@@ -99,9 +86,7 @@ export class MailController extends BaseController {
 
     const mailService = new MailService(emailAccount);
     const { access_token, expiry_date, token_type, refresh_token } = await mailService.getToken(code);
-
     emailAccount = { ...emailAccount, access_token, expiry_date, token_type, refresh_token };
-
     await this.emailAccountRepository.persist(emailAccount);
 
     return emailAccount;
@@ -130,6 +115,7 @@ export class MailController extends BaseController {
         }
       });
     if (!emailAccount) throw Boom.badRequest('Wrong user data');
+    
     return emailAccount;
   }
 
@@ -137,8 +123,10 @@ export class MailController extends BaseController {
     const mailService = new MailService(emailAccount);
     if (+emailAccount.expiry_date < (new Date()).getTime()) {
       const { access_token, expiry_date, token_type, refresh_token } = await mailService.refreshToken();
+      emailAccount = { ...emailAccount, access_token, expiry_date, token_type, refresh_token };
       await this.emailAccountRepository.persist(emailAccount);
     }
+
     return mailService;
   }
 }
