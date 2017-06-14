@@ -22,4 +22,19 @@ export class EmailAccount {
 
   @ManyToOne(type => User, user => user.email_accounts)
   user: User;
+
+  @Column()
+  state_code: string;
+
+  @Column()
+  access_token: string;
+
+  @Column()
+  expiry_date: string;
+
+  @Column()
+  token_type: string;
+
+  @Column()
+  refresh_token: string;
 }
