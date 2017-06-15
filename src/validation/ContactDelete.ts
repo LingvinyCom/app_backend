@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
-import { IsContactExists, IsUserExists } from "../utils/CustomValidators";
+import { IsContactExists } from "../utils/CustomValidators";
 
 export class ContactDelete {
 

@@ -1,15 +1,10 @@
-import { IsNotEmpty, IsArray, IsNumber, ArrayNotEmpty } from 'class-validator';
-import { IsUserExists } from "../utils/CustomValidators";
+import { IsNotEmpty, IsArray, ArrayNotEmpty } from 'class-validator';
 import { Contact } from "./Contact";
 
 export class ContactCreate {
 
+    @IsNotEmpty()
     @IsArray()
     @ArrayNotEmpty()
     public contacts: Contact[];
-
-    @IsNotEmpty()
-    @IsNumber()
-    @IsUserExists({ message: 'Wrong user ID' })
-    public user_id: number;
 }
